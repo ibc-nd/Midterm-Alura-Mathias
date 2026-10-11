@@ -8,8 +8,8 @@ a) Select a set of reference sequences from the `ref_sequences/` directory. Use 
 This is being done both for the mcrA gene and the hsp70 gene. After creating reference files with all the mcrA sequences and all the hsp70 sequences, these reference files were used with muscle.
 The command used to align the sequences:  ./software/muscle/muscle-v5.3 -in ./Midterm-Alura-Mathias/data/ref_sequences/mcrA_compiled_gene.fasta -out aligned.afa
 Note here, the final output is called align.afa, but was renamed to mcrA_aligned.afa afterwards. 
-The output shows all the amino acids from the different mcrA reference sequences. Dashes (-) are used to indicate where there are differences between the reference sequences. A dash indicates that an amino acid was either deleted from that particular reference sequence compared to the others, or was inserted in the sequences that have that amino acid.
-
+The output (the aligned.afa file) shows all the amino acids from the different mcrA reference sequences. Dashes (-) are used to indicate where there are differences between the reference sequences. A dash indicates that an amino acid was either deleted from that particular reference sequence compared to the others, or was inserted in the sequences that have that amino acid.
+The immediate output is some information about the sequences. This includes the number of sequences analyzing and their length.
 
 b) Use `hmmbuild` to build an HMM profile from your alignment. Report the command and the name of your profile.
 
