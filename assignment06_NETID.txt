@@ -5,6 +5,7 @@ As some of the questions require a written response, I figured we could keep tra
 ### 1 (5 pts)
 a) Select a set of reference sequences from the `ref_sequences/` directory. Use `muscle` to create a multiple sequence alignment. Show the command and briefly describe the output format.
 #Alura Response: 
+To load hmmer and muscle, used the module load bio command in the CRC.
 This is being done both for the mcrA gene and the hsp70 gene. After creating reference files with all the mcrA sequences and all the hsp70 sequences, these reference files were used with muscle.
 The command used to align the sequences: /software/b/bio/0326/bin/muscle -align mcrA_compiled_gene.fasta -output mcrA_aligned.afa. This was then run again for the hsp70_compiled_gene.fasta file (/software/b/bio/0329=6/bin/muscle -align hsp70_compiled_gene.fasta -output hsp70_aligned.afa)
 The output (the aligned.afa file) shows all the amino acids from the different mcrA or hsp70 reference sequences. Dashes (-) are used to indicate where there are differences between the reference sequences. A dash indicates that an amino acid was either deleted from that particular reference sequence compared to the others, or was inserted in the sequences that have that amino acid.
