@@ -1,16 +1,19 @@
+As some of the questions require a written response, I figured we could keep track of our answers in this document.
+
+
+
 ### 1 (5 pts)
 a) Select a set of reference sequences from the `ref_sequences/` directory. Use `muscle` to create a multiple sequence alignment. Show the command and briefly describe the output format.
 #Alura Response: 
-To load hmmer and muscle, the module load bio command in the CRC was used. Reference sequences were created with the command cat mcrA*.fasta > mcra_compiled_gene.fasta or cat hsp70*.fasta > hsp70_compiled_gene.fasta.
-After creating reference files with all the mcrA sequences and all the hsp70 sequences, these reference files were used with muscle.
+To load hmmer and muscle, used the module load bio command in the CRC.
+This is being done both for the mcrA gene and the hsp70 gene. After creating reference files with all the mcrA sequences and all the hsp70 sequences, these reference files were used with muscle.
 The command used to align the sequences: /software/b/bio/0326/bin/muscle -align mcrA_compiled_gene.fasta -output mcrA_aligned.afa. This was then run again for the hsp70_compiled_gene.fasta file (/software/b/bio/0329=6/bin/muscle -align hsp70_compiled_gene.fasta -output hsp70_aligned.afa)
-The output file (the aligned.afa file) shows all the amino acids from the different mcrA or hsp70 reference sequences. Dashes (-) are used to indicate where there are differences between the reference sequences. A dash indicates that an amino acid was either deleted from that particular reference sequence compared to the others, or was inserted in the sequences that have that amino acid.
-The immediate output in the terminal is some information about the sequences. This includes the number of sequences analyzing and their length.
+The output (the aligned.afa file) shows all the amino acids from the different mcrA or hsp70 reference sequences. Dashes (-) are used to indicate where there are differences between the reference sequences. A dash indicates that an amino acid was either deleted from that particular reference sequence compared to the others, or was inserted in the sequences that have that amino acid.
+The immediate output is some information about the sequences. This includes the number of sequences analyzing and their length.
 
 b) Use `hmmbuild` to build an HMM profile from your alignment. Report the command and the name of your profile.
 #Alura Response:
-The command used: /software/b/bio/0326/bin/hmmbuild mcrA_align.hmm mcrA_aligned.afa, and was repeted for hsp70 as well (/software/b/bio/0326/bin/hmmbuild hsp70_align.hmm hsp70_aligned.afa).
-The output profiles are mcrA_align.hmm and hsp70_align.hmm 
+The command used: /software/b/bio/0326/bin/hmmbuild mcrA_align.hmm mcrA_aligned.afa, and was repeted for hsp70 as well (/software/b/bio/0326/bin/hmmbuild hsp70_align.hmm hsp70_aligned.afa)
 The profile is called mcrA_align.hmm (or hsp70_align.hmm).
 
 ### 2 (5 pts)
@@ -33,36 +36,11 @@ A lower E-value indicates a more statistically significant match.
 Write a bash script called `run_pipeline.sh` that:
 
 1. Takes a reference FASTA file and a directory of proteome files as arguments
-#Alura Response: 
-Will use $1 and $2 where $1 refers to the reference sequence and $2 is the proteome directory
-
 2. Builds the alignment and HMM profile
-#Alura Reseponse:
-/software/b/bio/0326/bin/muscle -align "$1" -output aligned.afa
-/software/b/bio/0326/bin/hmmbuild profile.hmm aligned.afa
-
 3. Searches **every** proteome in the directory
-#Alura Response:
-for proteome in "$2"/*.fasta
-do
-name=$(basename "$proteome")
-/software/b/bio/0326/bin/hmmsearch --tblout tmp.txt profile.hmm "$proteome"
-hits=$(grep -v "^#" tmp.txt | awk '$5<0.001' | wc -l)
-echo "$name,$hits" >> tmp_pipeline_results.csv
-done
-
 4. Outputs a CSV file `pipeline_results.csv` with columns: `proteome,num_hits`
-#Alura Response: 
-echo proteome, num_hits > pipeline_results.csv
-cat tmp_pipeline_results.csv >> pipeline_results.csv
 
 Include error checking (e.g., verify files exist). Test on at least 5 proteomes.
-#Alura Response:
-Error checking:
-set -e
-ls "$1" "$2"
-
-Tested with all 50 proteomes, it works!!
 
 ### 4 (5 pts)
 a) Run your pipeline on all proteomes in the `proteomes/` directory.
@@ -87,25 +65,9 @@ However, it also is able to capture the variation within a protein family, which
 Pairwise alignment is useful when comparing closely related sequences. 
 Profile-based searching is useful for identifying distantly related sequences that may be missed by pairwise alignment, as it is more flexible with point mutations.
 
-#Alura Response:
-Pairwise alignment aligns sequences into pairs. This can be done with amino acid or genetic sequences.
-Unlike pairwise alignment, profile-based searching is used to compare proteins based upon their sequences. The output is not an alignment, but a position-specific scoring table that describes the similarity of a target sequence to the other aligned sequences.
-A pairwise alignment would likely be used when comparing gene or amino acid sequences. For example, when looking for point mutations.
-A profile-based search would be used to compare a set of proteins. For example, to identify different proteins within a protein family.
-Sources:
-J. Li, S. Ranka, S. Sahni, Chapter 8 - GPU alignment of two and three sequences, In Emerging Trends in Computer Science and Applied Computing, Advances in GPU Research and Practice,
-Morgan Kaufmann, 2017, Pages 199-232, https://doi.org/10.1016/B978-0-12-803738-6.00008-2.
-Gribskov M, McLachlan AD, Eisenberg D. Profile analysis: detection of distantly related proteins. Proc Natl Acad Sci U S A. 1987 Jul;84(13):4355-8. doi: 10.1073/pnas.84.13.4355. PMID: 3474607; PMCID: PMC305087.
-
 b) Why is building an HMM profile from multiple sequences more sensitive than using a single sequence as a BLAST query?
 #Mathias response:
 An HMM profile allows for conserved positions, variable regions, and patterns of AA substitutions to be captured across multiple related sequences. 
 This can allow for recognition of more distant homologs, as it has more sequences to compare it to. 
 A single-sequence BLAST query doesn’t capture the full range of variation that can be seen in a proteome, making it less sensitive for detecting variability and overall more distant evolutionary relationships.
 
-#Alura Response:
-Having a HMM profile that is the product of multiple sequences is more exact since there will naturally be minor variations between different members of a species.
-As such, compiling a more general/inclusive profile will prevent minor differences between different samples from biasing the results. 
-Furthermore, a HMM profile is position-specific allowing analysis to include the degree of conservation. 
-Source:
-https://bip.weizmann.ac.il/education/materials/gcg/hmmanalysis.html
