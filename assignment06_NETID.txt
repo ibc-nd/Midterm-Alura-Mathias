@@ -18,10 +18,19 @@ The profile is called mcrA_align.hmm (or hsp70_align.hmm).
 
 ### 2 (5 pts)
 a) Use `hmmsearch` to search your HMM profile against **one** proteome from the `proteomes/` directory. Save the output with `--tblout`.
+#Mathias response: 
+The command used: hmmsearch --tblout results_mcrA_proteome03.txt mcrA_align.hmm proteome03.fasta for mcrA and hmmsearch --tblout results_hsp70_proteome03.txt hsp70_align.hmm proteome03.fasta for hsp70.
 
 b) Examine the output. How many significant hits (E-value < 0.001) did you find? Show the `grep` or `awk` command used to filter.
+#Mathias response:
+We found one significant hit for the mcrA gene. For Hsp70, we found 3 significant hits. The command to filter is: grep -v “^#” results_mcrA.txt | awk ‘$5 < 0.001’ | wc -l. 
 
 c) Explain in 2–3 sentences what the E-value represents and why we use a threshold.
+#Mathias Reponse:
+The E-value is a measure of statistical significance of how close the test sequence is to the reference sequence. 
+It represents the number of matches with a score at least as good as the observed match that would be expected to occur by chance (false positive). 
+We use this as a threshold to filter out matches that are likely to be random rather than significant.
+A lower E-value indicates a more statistically significant match.
 
 ### 3 (10 pts)
 Write a bash script called `run_pipeline.sh` that:
@@ -35,13 +44,30 @@ Include error checking (e.g., verify files exist). Test on at least 5 proteomes.
 
 ### 4 (5 pts)
 a) Run your pipeline on all proteomes in the `proteomes/` directory.
+#Mathias Response:
+The command used to run the pipeline is: bash run_pipeline.sh reference_sequences/hsp70_compiled_gene.fasta data/proteomes/
 
 b) Which proteome had the most hits? Which had the fewest (or zero)?
+#Mathias response:
+Proteome 18 and 22 had the most hits with 7. Proteomes 2, 6, 17, 28, 29, 33, 40, and 46 had the fewest with zero.
 
 c) What biological question could the variation in hit counts answer?
+#Mathias response:
+The variation in hit counts could help determine which proteomes have the mcrA genes, identifying potential methanogens, and which proteomes have the Hsp70 gene, identifying potential pH resistance. 
+Combining the two results can lead to identification of potential pH-resistant methanogenic Archaea. 
 
 ### 5 (10 pts)
 a) Describe the difference between **pairwise alignment** and **profile-based searching**. When would you use each?
+#Mathias response:
+Pairwise alignment means arranging two sequences and comparing them directly to identify which regions have similarities that line up. 
+On the other hand profile-based searching uses a hidden markov model (HMM) profile built from multiple sequence alignments of similar sequences that are related to capture which positions are conserved. 
+However, it also is able to capture the variation within a protein family, which pairwise alignment struggles with. 
+Pairwise alignment is useful when comparing closely related sequences. 
+Profile-based searching is useful for identifying distantly related sequences that may be missed by pairwise alignment, as it is more flexible with point mutations.
 
 b) Why is building an HMM profile from multiple sequences more sensitive than using a single sequence as a BLAST query?
+#Mathias response:
+An HMM profile allows for conserved positions, variable regions, and patterns of AA substitutions to be captured across multiple related sequences. 
+This can allow for recognition of more distant homologs, as it has more sequences to compare it to. 
+A single-sequence BLAST query doesn’t capture the full range of variation that can be seen in a proteome, making it less sensitive for detecting variability and overall more distant evolutionary relationships.
 
