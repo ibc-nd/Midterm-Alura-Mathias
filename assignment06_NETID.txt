@@ -13,8 +13,8 @@ The immediate output is some information about the sequences. This includes the 
 
 b) Use `hmmbuild` to build an HMM profile from your alignment. Report the command and the name of your profile.
 #Alura Response:
-The command used: /software/b/bio/0326/bin/hmmbuild mcrA.hmm mcrA_aligned.afa, and was repeted for hsp70 as well (/software/b/bio/0326/bin/hmmbuild hsp70.hmm hsp70_aligned.afa)
-The profile is called mcrA.hmm (or hsp70.hmm).
+The command used: /software/b/bio/0326/bin/hmmbuild mcrA_align.hmm mcrA_aligned.afa, and was repeted for hsp70 as well (/software/b/bio/0326/bin/hmmbuild hsp70_align.hmm hsp70_aligned.afa)
+The profile is called mcrA_align.hmm (or hsp70_align.hmm).
 
 ### 2 (5 pts)
 a) Use `hmmsearch` to search your HMM profile against **one** proteome from the `proteomes/` directory. Save the output with `--tblout`.
