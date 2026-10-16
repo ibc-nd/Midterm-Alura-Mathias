@@ -1,23 +1,16 @@
-#bash script for Question 3
-##Instructions: to use the script, create a directory with all gene and proteome fasta files of interest
-###In the directory, type bash run_pipeline.sh into the command line
+#Usage: bash run_pipeline.sh reference.fasta proteome.fasta
+#In the directory, there should be a reference.fasta ($1) file for the gene of interest and a sub directory with all the proteome fasta files ($2)
+#For example, $1 input can be mcrA_reference_sequence.fasta and $2 can be proteome/
 
-#script organizes fasta files into folders
-mkdir ref_sequences/ proteomes/
-mv *gene*.fasta ref_sequences/
-mv proteome*.fasta proteomes/
+#error checking where $1 refers to all the fasta sequences for a given gene and $2 refers to all the proteomes
+set -e
+ls "$1" "$2"
 
-#script builds an alignment for given gene fasta sequences
-for sequence in ref_sequences/*.fasta
-do
-cat $sequence >> reference.fasta
-done
-
-#to get muscle and hmmer
+#make sure muscle and hmmer are loaded
 module load bio
 
 #script aligns sequences and then builds hmm profile
-/software/b/bio/0326/bin/muscle -align reference.fasta -output aligned.afa
+/software/b/bio/0326/bin/muscle -align "$1" -output aligned.afa
 
 /software/b/bio/0326/bin/hmmbuild profile.hmm aligned.afa
 
@@ -25,12 +18,11 @@ module load bio
 ##results are saved in pipeline_results.csv 
 ###columns are proteome, num_hits
 
-for proteome in proteomes/*.fasta
+for proteome in "$2"/*.fasta
 do
 name=$(basename "$proteome")
 /software/b/bio/0326/bin/hmmsearch --tblout tmp.txt profile.hmm "$proteome"
 hits=$(grep -v "^#" tmp.txt | awk '$5<0.001' | wc -l)
-#echo proteome, num_hits >> tmp_pipeline_results.csv
 echo "$name,$hits" >> tmp_pipeline_results.csv
 done
 
