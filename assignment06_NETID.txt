@@ -71,7 +71,7 @@ The command used to run the pipeline is: bash run_pipeline.sh reference_sequence
 
 b) Which proteome had the most hits? Which had the fewest (or zero)?
 #Mathias response:
-Proteome 18 and 22 had the most hits with 7. Proteomes 2, 6, 17, 28, 29, 33, 40, and 46 had the fewest with zero.
+Proteome 18 and 22 had the most hits with 7. Proteomes 2, 6, 17, 28, 33, 40, and 46 had the fewest with zero.
 
 c) What biological question could the variation in hit counts answer?
 #Mathias response:
