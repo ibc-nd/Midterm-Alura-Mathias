@@ -2,3 +2,5 @@
 hsp70.hmm
 mcrA70.hmm
 
+#Ignore test folder
+test_pipeline/
